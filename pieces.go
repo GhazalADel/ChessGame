@@ -1,21 +1,30 @@
 package ChessGame
 
-type chessPieces map[chessPieceType][]ChessPiece
+type chessPiecesData map[chessPieceType][]ChessPiece
 
-func (pieces chessPieces) King() ChessPiece {
-	return pieces[typeKing][0]
+type chessPieces struct {
+	data  chessPiecesData
+	board *Board
 }
 
-func (pieces chessPieces) Add(piece ChessPiece) {
-	pieceType := piece.getType()
+func (pieces chessPieces) King() ChessPiece {
+	return pieces.data[typeKing][0]
+}
 
-	if _, contains := pieces[pieceType]; !contains {
-		pieces[pieceType] = make([]ChessPiece, 0, 1)
+func (pieces chessPieces) add(piece ChessPiece) {
+	if pieces.data == nil {
+		pieces.data = make(chessPiecesData)
 	}
 
-	if pieceType == typeKing && len(pieces[typeKing]) != 0 {
+	pieceType := piece.getType()
+
+	if _, contains := pieces.data[pieceType]; !contains {
+		pieces.data[pieceType] = make([]ChessPiece, 0, 1)
+	}
+
+	if pieceType == typeKing && len(pieces.data[typeKing]) != 0 {
 		panic("You can only have one King!")
 	}
 
-	pieces[pieceType] = append(pieces[pieceType], piece)
+	pieces.data[pieceType] = append(pieces.data[pieceType], piece)
 }

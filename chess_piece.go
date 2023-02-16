@@ -14,4 +14,8 @@ const (
 
 type ChessPiece interface {
 	getType() chessPieceType
+	getPosition() *Cell
+	getColor() chessPieceColor
+
+	attachToBoard(board *Board)
 }
