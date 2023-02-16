@@ -51,6 +51,76 @@ func CreateBoard() *Board {
 				Position: Cell{i, BoardGrid - 2},
 			})
 		}
+
+		board.AddPiece(&Rook{
+			Color:    Black,
+			Position: Cell{0, 0},
+		})
+		board.AddPiece(&Rook{
+			Color:    Black,
+			Position: Cell{7, 0},
+		})
+		board.AddPiece(&Rook{
+			Color:    White,
+			Position: Cell{0, 7},
+		})
+		board.AddPiece(&Rook{
+			Color:    White,
+			Position: Cell{7, 7},
+		})
+
+		board.AddPiece(&Knight{
+			Color:    Black,
+			Position: Cell{1, 0},
+		})
+		board.AddPiece(&Knight{
+			Color:    Black,
+			Position: Cell{6, 0},
+		})
+		board.AddPiece(&Knight{
+			Color:    White,
+			Position: Cell{1, 7},
+		})
+		board.AddPiece(&Knight{
+			Color:    White,
+			Position: Cell{6, 7},
+		})
+
+		board.AddPiece(&Bishop{
+			Color:    Black,
+			Position: Cell{2, 0},
+		})
+		board.AddPiece(&Bishop{
+			Color:    Black,
+			Position: Cell{5, 0},
+		})
+		board.AddPiece(&Bishop{
+			Color:    White,
+			Position: Cell{2, 7},
+		})
+		board.AddPiece(&Bishop{
+			Color:    White,
+			Position: Cell{5, 7},
+		})
+
+		board.AddPiece(&Queen{
+			Color:    Black,
+			Position: Cell{3, 0},
+		})
+		board.AddPiece(&Queen{
+			Color:    White,
+			Position: Cell{3, 7},
+		})
+
+		board.AddPiece(&King{
+			Color:    Black,
+			Position: Cell{4, 0},
+		})
+		board.AddPiece(&Queen{
+			Color:    White,
+			Position: Cell{4, 7},
+		})
+
 	}
 
 	return board
