@@ -1,13 +1,19 @@
 package ChessGame
 
-type ChessPieces map[ChessPieceType][]ChessPiece
+type turn bool
 
-func (pieces ChessPieces) King() ChessPiece {
-	return pieces[King][0]
-}
+const (
+	White turn = true
+	Black turn = false
+)
 
 type Board struct {
-	blackPieces ChessPieces
-	whitePieces ChessPieces
-	turnWhite   bool
+	blackPieces chessPieces
+	whitePieces chessPieces
+	turn        turn
+}
+
+func CreateBoard() *Board {
+
+	return nil
 }

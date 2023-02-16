@@ -1,14 +1,17 @@
 package ChessGame
 
-type ChessPieceType int
-type ChessPiece interface{}
+type chessPieceType int
 
 const (
-	_ChessPieceType = iota
-	Pawn
-	Rook
-	Knight
-	Bishop
-	Queen
-	King
+	_ chessPieceType = iota
+	typePawn
+	typeRook
+	typeKnight
+	typeBishop
+	typeQueen
+	typeKing
 )
+
+type ChessPiece interface {
+	getType() chessPieceType
+}
