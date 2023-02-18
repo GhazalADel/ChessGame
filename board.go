@@ -1,5 +1,7 @@
 package ChessGame
 
+import "fmt"
+
 type chessPieceColor bool
 
 const BoardGrid = 8
@@ -120,8 +122,89 @@ func CreateBoard() *Board {
 			Color:    White,
 			Position: Cell{4, 7},
 		})
-
 	}
-
 	return board
+}
+func (board *Board) getPieceOnCell(c Cell) ChessPiece {
+	return board.piecesOnCell[c.X][c.Y]
+}
+func getPieceSymbol(piece ChessPiece) string {
+	symbol := ""
+	if piece == nil {
+		symbol = ""
+	} else {
+		switch piece.(type) {
+		case *Pawn:
+			if piece.getColor() {
+				symbol = "♙"
+			} else {
+				symbol = "♟"
+			}
+		case *Knight:
+			if piece.getColor() {
+				symbol = "♘"
+			} else {
+				symbol = "♞"
+			}
+		case *Bishop:
+			if piece.getColor() {
+				symbol = "♗"
+			} else {
+				symbol = "♝"
+			}
+		case *Rook:
+			if piece.getColor() {
+				symbol = "♖"
+			} else {
+				symbol = "♜"
+			}
+		case *Queen:
+			if piece.getColor() {
+				symbol = "♕"
+			} else {
+				symbol = "♛"
+			}
+		case *King:
+			if piece.getColor() {
+				symbol = "♔"
+			} else {
+				symbol = "♚"
+			}
+		default:
+			symbol = ""
+		}
+	}
+	return symbol
+}
+func showBoard(board *Board) {
+	fmt.Println("┌────┐────┐────┐────┐────┐────┐────┐────┐")
+	for i := 0; i < 7; i++ {
+		var pieceOnRow [8]string
+		for j := 0; j < 8; j++ {
+			c := Cell{
+				X: j,
+				Y: i,
+			}
+			piece := board.getPieceOnCell(c)
+			pieceOnRow[j] = getPieceSymbol(piece)
+
+		}
+		fmt.Printf("│ %s  │ %s  │ %s  │ %s  │ %s  │ %s  │ %s  │ %s  │\n", pieceOnRow[0], pieceOnRow[1], pieceOnRow[2], pieceOnRow[3], pieceOnRow[4], pieceOnRow[5], pieceOnRow[6], pieceOnRow[7])
+		fmt.Printf("├────├────├────├────├────├────├────├────┤\n")
+	}
+	var pieceOnRow [8]string
+	for j := 0; j < 8; j++ {
+		c := Cell{
+			X: j,
+			Y: 7,
+		}
+		piece := board.getPieceOnCell(c)
+		pieceOnRow[j] = getPieceSymbol(piece)
+		fmt.Printf("│ %s  │ %s  │ %s  │ %s  │ %s  │ %s  │ %s  │ %s  │\n", pieceOnRow[0], pieceOnRow[1], pieceOnRow[2], pieceOnRow[3], pieceOnRow[4], pieceOnRow[5], pieceOnRow[6], pieceOnRow[7])
+		fmt.Println("└────└────└────└────└────└────└────└────┘")
+	}
+}
+
+type BoardTools interface {
+	showBoard(board *Board)
 }
