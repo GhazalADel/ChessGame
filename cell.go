@@ -18,3 +18,8 @@ func (cell *Cell) updateStatic(x, y int) {
 	cell.Y = y
 	cell.hasMoved = true
 }
+
+func (cell *Cell) isUndefined() bool {
+	return cell.X < 0 || cell.Y < 0 ||
+		cell.X >= BoardGrid || cell.Y >= BoardGrid
+}
