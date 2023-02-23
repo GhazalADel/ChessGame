@@ -36,7 +36,7 @@ func (pawn *Pawn) GetAvailableMoves() []Cell {
 	cell := Cell{X: pawn.Position.X, Y: nextY}
 	replace := pawn.board.GetPieceOnCell(cell)
 	if replace == nil {
-		validateAndAddMove(moves, pawn, replace, cell)
+		validateAndAddMove(&moves, pawn, replace, cell)
 
 		if pawn.isFirstMove() {
 			if pawn.Color.IsBlack() {
@@ -47,7 +47,7 @@ func (pawn *Pawn) GetAvailableMoves() []Cell {
 
 			replace = pawn.board.GetPieceOnCell(cell)
 			if replace == nil {
-				validateAndAddMove(moves, pawn, replace, cell)
+				validateAndAddMove(&moves, pawn, replace, cell)
 			}
 		}
 	}
@@ -56,14 +56,14 @@ func (pawn *Pawn) GetAvailableMoves() []Cell {
 	cell.Y = nextY
 	replace = pawn.board.GetPieceOnCell(cell)
 	if isEnemy(pawn, replace) {
-		validateAndAddMove(moves, pawn, replace, cell)
+		validateAndAddMove(&moves, pawn, replace, cell)
 	}
 
 	cell.Y = pawn.Position.Y
 	replace = pawn.board.GetPieceOnCell(cell)
 	if replace != nil {
 		if p, ok := replace.(*Pawn); ok && p.enPassant {
-			validateAndAddMove(moves, pawn, replace, cell)
+			validateAndAddMove(&moves, pawn, replace, cell)
 		}
 	}
 
@@ -71,14 +71,14 @@ func (pawn *Pawn) GetAvailableMoves() []Cell {
 	cell.Y = nextY
 	replace = pawn.board.GetPieceOnCell(cell)
 	if isEnemy(pawn, replace) {
-		validateAndAddMove(moves, pawn, replace, cell)
+		validateAndAddMove(&moves, pawn, replace, cell)
 	}
 
 	cell.Y = pawn.Position.Y
 	replace = pawn.board.GetPieceOnCell(cell)
 	if replace != nil {
 		if p, ok := replace.(*Pawn); ok && p.enPassant {
-			validateAndAddMove(moves, pawn, replace, cell)
+			validateAndAddMove(&moves, pawn, replace, cell)
 		}
 	}
 	return moves

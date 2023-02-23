@@ -35,7 +35,7 @@ func (knight *Knight) GetAvailableMoves() []Cell {
 	for _, path := range paths {
 		cell := Cell{X: knight.Position.X + path[0], Y: knight.Position.Y + path[1]}
 		replace := knight.board.GetPieceOnCell(cell)
-		validateAndAddMove(moves, knight, replace, cell)
+		validateAndAddMove(&moves, knight, replace, cell)
 
 	}
 	return moves

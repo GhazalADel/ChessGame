@@ -34,7 +34,7 @@ func (rook *Rook) GetAvailableMoves() []Cell {
 		cell := Cell{X: rook.Position.X + path[0], Y: rook.Position.Y + path[1]}
 
 		for !cell.isUndefined() &&
-			validateAndAddMove(moves, rook, rook.board.GetPieceOnCell(cell), cell) {
+			validateAndAddMove(&moves, rook, rook.board.GetPieceOnCell(cell), cell) {
 			cell.X += path[0]
 			cell.Y += path[1]
 		}

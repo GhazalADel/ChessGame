@@ -133,9 +133,13 @@ func CreateBoard() *Board {
 }
 
 func (board *Board) GetPieceOnCell(c Cell) ChessPiece {
+	if c.isUndefined() {
+		return nil
+	}
 	return board.piecesOnCell[c.X][c.Y]
 }
 
-type BoardTools interface {
-	showBoard(board *Board)
+type BoardInterface interface {
+	ShowBoard()
+	SelectCell(cell Cell)
 }

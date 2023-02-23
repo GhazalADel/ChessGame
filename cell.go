@@ -23,3 +23,7 @@ func (cell *Cell) isUndefined() bool {
 	return cell.X < 0 || cell.Y < 0 ||
 		cell.X >= BoardGrid || cell.Y >= BoardGrid
 }
+
+func (cell *Cell) Equals(other *Cell) bool {
+	return cell.X == other.X && cell.Y == other.Y
+}

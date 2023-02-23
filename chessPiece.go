@@ -22,10 +22,10 @@ type ChessPiece interface {
 	attachToBoard(board *Board)
 }
 
-func validateAndAddMove(moves []Cell, piece, replace ChessPiece, cell Cell) bool {
+func validateAndAddMove(moves *[]Cell, piece, replace ChessPiece, cell Cell) bool {
 	if replace == nil || replace.GetColor() != piece.GetColor() {
 		// TODO: validate checkmate here
-		moves = append(moves, cell)
+		*moves = append(*moves, cell)
 	}
 
 	return replace == nil

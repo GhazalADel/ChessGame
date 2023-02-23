@@ -36,7 +36,7 @@ func (queen *Queen) GetAvailableMoves() []Cell {
 		cell := Cell{X: queen.Position.X + path[0], Y: queen.Position.Y + path[1]}
 
 		for !cell.isUndefined() &&
-			validateAndAddMove(moves, queen, queen.board.GetPieceOnCell(cell), cell) {
+			validateAndAddMove(&moves, queen, queen.board.GetPieceOnCell(cell), cell) {
 			cell.X += path[0]
 			cell.Y += path[1]
 		}
