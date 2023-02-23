@@ -16,37 +16,37 @@ func GetPieceSymbol(piece ChessGame.ChessPiece) string {
 	if piece != nil {
 		switch piece.(type) {
 		case *ChessGame.Pawn:
-			if piece.GetColor().IsWhite() {
+			if piece.GetColor().IsBlack() {
 				symbol = "♙"
 			} else {
 				symbol = "♟"
 			}
 		case *ChessGame.Knight:
-			if piece.GetColor().IsWhite() {
+			if piece.GetColor().IsBlack() {
 				symbol = "♘"
 			} else {
 				symbol = "♞"
 			}
 		case *ChessGame.Bishop:
-			if piece.GetColor().IsWhite() {
+			if piece.GetColor().IsBlack() {
 				symbol = "♗"
 			} else {
 				symbol = "♝"
 			}
 		case *ChessGame.Rook:
-			if piece.GetColor().IsWhite() {
+			if piece.GetColor().IsBlack() {
 				symbol = "♖"
 			} else {
 				symbol = "♜"
 			}
 		case *ChessGame.Queen:
-			if piece.GetColor().IsWhite() {
+			if piece.GetColor().IsBlack() {
 				symbol = "♕"
 			} else {
 				symbol = "♛"
 			}
 		case *ChessGame.King:
-			if piece.GetColor().IsWhite() {
+			if piece.GetColor().IsBlack() {
 				symbol = "♔"
 			} else {
 				symbol = "♚"
