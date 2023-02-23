@@ -1,7 +1,5 @@
 package ChessGame
 
-import "fmt"
-
 type chessPieceColor bool
 
 const BoardGrid = 8
@@ -10,6 +8,14 @@ const (
 	White chessPieceColor = true
 	Black chessPieceColor = false
 )
+
+func (color chessPieceColor) IsWhite() bool {
+	return color == White
+}
+
+func (color chessPieceColor) IsBlack() bool {
+	return color == Black
+}
 
 type Board struct {
 	BlackPieces chessPieces
@@ -20,12 +26,12 @@ type Board struct {
 }
 
 func (board *Board) AddPiece(piece ChessPiece) {
-	position := piece.getPosition()
+	position := piece.GetPosition()
 	if board.piecesOnCell[position.X][position.Y] != nil {
 		panic("There is a piece already!")
 	}
 
-	if piece.getColor() == White {
+	if piece.GetColor() == White {
 		board.WhitePieces.add(piece)
 	} else {
 		board.BlackPieces.add(piece)
@@ -45,164 +51,89 @@ func CreateBoard() *Board {
 		for i := 0; i < BoardGrid; i++ {
 			board.AddPiece(&Pawn{
 				Color:    Black,
-				Position: Cell{i, 1},
+				Position: Cell{X: i, Y: 1},
 			})
 
 			board.AddPiece(&Pawn{
 				Color:    White,
-				Position: Cell{i, BoardGrid - 2},
+				Position: Cell{X: i, Y: BoardGrid - 2},
 			})
 		}
 
 		board.AddPiece(&Rook{
 			Color:    Black,
-			Position: Cell{0, 0},
+			Position: Cell{X: 0, Y: 0},
 		})
 		board.AddPiece(&Rook{
 			Color:    Black,
-			Position: Cell{7, 0},
+			Position: Cell{X: 7, Y: 0},
 		})
 		board.AddPiece(&Rook{
 			Color:    White,
-			Position: Cell{0, 7},
+			Position: Cell{X: 0, Y: 7},
 		})
 		board.AddPiece(&Rook{
 			Color:    White,
-			Position: Cell{7, 7},
+			Position: Cell{X: 7, Y: 7},
 		})
 
 		board.AddPiece(&Knight{
 			Color:    Black,
-			Position: Cell{1, 0},
+			Position: Cell{X: 1, Y: 0},
 		})
 		board.AddPiece(&Knight{
 			Color:    Black,
-			Position: Cell{6, 0},
+			Position: Cell{X: 6, Y: 0},
 		})
 		board.AddPiece(&Knight{
 			Color:    White,
-			Position: Cell{1, 7},
+			Position: Cell{X: 1, Y: 7},
 		})
 		board.AddPiece(&Knight{
 			Color:    White,
-			Position: Cell{6, 7},
+			Position: Cell{X: 6, Y: 7},
 		})
 
 		board.AddPiece(&Bishop{
 			Color:    Black,
-			Position: Cell{2, 0},
+			Position: Cell{X: 2, Y: 0},
 		})
 		board.AddPiece(&Bishop{
 			Color:    Black,
-			Position: Cell{5, 0},
+			Position: Cell{X: 5, Y: 0},
 		})
 		board.AddPiece(&Bishop{
 			Color:    White,
-			Position: Cell{2, 7},
+			Position: Cell{X: 2, Y: 7},
 		})
 		board.AddPiece(&Bishop{
 			Color:    White,
-			Position: Cell{5, 7},
+			Position: Cell{X: 5, Y: 7},
 		})
 
 		board.AddPiece(&Queen{
 			Color:    Black,
-			Position: Cell{3, 0},
+			Position: Cell{X: 3, Y: 0},
 		})
 		board.AddPiece(&Queen{
 			Color:    White,
-			Position: Cell{3, 7},
+			Position: Cell{X: 3, Y: 7},
 		})
 
 		board.AddPiece(&King{
 			Color:    Black,
-			Position: Cell{4, 0},
+			Position: Cell{X: 4, Y: 0},
 		})
 		board.AddPiece(&Queen{
 			Color:    White,
-			Position: Cell{4, 7},
+			Position: Cell{X: 4, Y: 7},
 		})
 	}
 	return board
 }
-func (board *Board) getPieceOnCell(c Cell) ChessPiece {
-	return board.piecesOnCell[c.X][c.Y]
-}
-func getPieceSymbol(piece ChessPiece) string {
-	symbol := ""
-	if piece == nil {
-		symbol = ""
-	} else {
-		switch piece.(type) {
-		case *Pawn:
-			if piece.getColor() {
-				symbol = "♙"
-			} else {
-				symbol = "♟"
-			}
-		case *Knight:
-			if piece.getColor() {
-				symbol = "♘"
-			} else {
-				symbol = "♞"
-			}
-		case *Bishop:
-			if piece.getColor() {
-				symbol = "♗"
-			} else {
-				symbol = "♝"
-			}
-		case *Rook:
-			if piece.getColor() {
-				symbol = "♖"
-			} else {
-				symbol = "♜"
-			}
-		case *Queen:
-			if piece.getColor() {
-				symbol = "♕"
-			} else {
-				symbol = "♛"
-			}
-		case *King:
-			if piece.getColor() {
-				symbol = "♔"
-			} else {
-				symbol = "♚"
-			}
-		default:
-			symbol = ""
-		}
-	}
-	return symbol
-}
-func showBoard(board *Board) {
-	fmt.Println("┌────┐────┐────┐────┐────┐────┐────┐────┐")
-	for i := 0; i < 7; i++ {
-		var pieceOnRow [8]string
-		for j := 0; j < 8; j++ {
-			c := Cell{
-				X: j,
-				Y: i,
-			}
-			piece := board.getPieceOnCell(c)
-			pieceOnRow[j] = getPieceSymbol(piece)
 
-		}
-		fmt.Printf("│ %s  │ %s  │ %s  │ %s  │ %s  │ %s  │ %s  │ %s  │\n", pieceOnRow[0], pieceOnRow[1], pieceOnRow[2], pieceOnRow[3], pieceOnRow[4], pieceOnRow[5], pieceOnRow[6], pieceOnRow[7])
-		fmt.Printf("├────├────├────├────├────├────├────├────┤\n")
-	}
-	var pieceOnRow [8]string
-	for j := 0; j < 8; j++ {
-		c := Cell{
-			X: j,
-			Y: 7,
-		}
-		piece := board.getPieceOnCell(c)
-		pieceOnRow[j] = getPieceSymbol(piece)
-		fmt.Printf("│ %s  │ %s  │ %s  │ %s  │ %s  │ %s  │ %s  │ %s  │\n", pieceOnRow[0], pieceOnRow[1], pieceOnRow[2], pieceOnRow[3], pieceOnRow[4], pieceOnRow[5], pieceOnRow[6], pieceOnRow[7])
-		fmt.Println("└────└────└────└────└────└────└────└────┘")
-	}
+func (board *Board) GetPieceOnCell(c Cell) ChessPiece {
+	return board.piecesOnCell[c.X][c.Y]
 }
 
 type BoardTools interface {

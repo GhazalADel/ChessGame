@@ -4,21 +4,96 @@ type Pawn struct {
 	Position Cell
 	Color    chessPieceColor
 
-	board *Board
+	board     *Board
+	enPassant bool
 }
 
 func (pawn *Pawn) getType() chessPieceType {
 	return typePawn
 }
 
-func (pawn *Pawn) getPosition() *Cell {
+func (pawn *Pawn) GetPosition() *Cell {
 	return &pawn.Position
 }
 
-func (pawn *Pawn) getColor() chessPieceColor {
+func (pawn *Pawn) GetColor() chessPieceColor {
 	return pawn.Color
 }
 
 func (pawn *Pawn) attachToBoard(board *Board) {
 	pawn.board = board
+}
+
+func (pawn *Pawn) GetAvailableMoves() []Cell {
+	moves := make([]Cell, 0, 4)
+	nextY := pawn.Position.Y
+	if pawn.Color.IsBlack() {
+		nextY++
+	} else {
+		nextY--
+	}
+
+	cell := Cell{X: pawn.Position.X, Y: nextY}
+	replace := pawn.board.GetPieceOnCell(cell)
+	if replace == nil {
+		validateAndAddMove(moves, pawn, replace, cell)
+
+		if pawn.isFirstMove() {
+			if pawn.Color.IsBlack() {
+				cell.Y++
+			} else {
+				cell.Y--
+			}
+
+			replace = pawn.board.GetPieceOnCell(cell)
+			if replace == nil {
+				validateAndAddMove(moves, pawn, replace, cell)
+			}
+		}
+	}
+
+	cell.X = pawn.Position.X + 1
+	cell.Y = nextY
+	replace = pawn.board.GetPieceOnCell(cell)
+	if isEnemy(pawn, replace) {
+		validateAndAddMove(moves, pawn, replace, cell)
+	}
+
+	cell.Y = pawn.Position.Y
+	replace = pawn.board.GetPieceOnCell(cell)
+	if replace != nil {
+		if p, ok := replace.(*Pawn); ok && p.enPassant {
+			validateAndAddMove(moves, pawn, replace, cell)
+		}
+	}
+
+	cell.X = pawn.Position.X - 1
+	cell.Y = nextY
+	replace = pawn.board.GetPieceOnCell(cell)
+	if isEnemy(pawn, replace) {
+		validateAndAddMove(moves, pawn, replace, cell)
+	}
+
+	cell.Y = pawn.Position.Y
+	replace = pawn.board.GetPieceOnCell(cell)
+	if replace != nil {
+		if p, ok := replace.(*Pawn); ok && p.enPassant {
+			validateAndAddMove(moves, pawn, replace, cell)
+		}
+	}
+	return moves
+}
+
+func (pawn *Pawn) moveTo(cell Cell) {
+	pawn.enPassant = pawn.isFirstMove() &&
+		((pawn.Color.IsBlack() && cell.Y == 3) ||
+			(pawn.Color.IsWhite() && cell.Y == BoardGrid-4))
+
+	pawn.Position.update(cell)
+}
+
+func (pawn *Pawn) isFirstMove() bool {
+	return !pawn.Position.hasMoved &&
+		((pawn.Color.IsBlack() && pawn.Position.Y == 1) ||
+			(pawn.Color.IsWhite() && pawn.Position.Y == BoardGrid-2))
 }
