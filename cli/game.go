@@ -118,10 +118,8 @@ func (cli *ChessGameCLI) ShowBoard() {
 				}
 			}
 		}
-	}
 
-	for _, row := range boardMap {
-		fmt.Print(row[:]...)
+		fmt.Print(boardMap[j][:]...)
 		fmt.Println()
 	}
 }
