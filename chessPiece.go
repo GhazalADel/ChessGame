@@ -73,6 +73,6 @@ func isUnderAttack(board *Board, color chessPieceColor, cell *Cell) bool {
 	return false
 }
 
-func Check(board *Board, color chessPieceColor) bool {
+func isCheck(board *Board, color chessPieceColor) bool {
 	return isUnderAttack(board, color, getKing(board, color).GetPosition())
 }
