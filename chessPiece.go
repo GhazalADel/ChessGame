@@ -38,36 +38,41 @@ func isEnemy(piece1, piece2 ChessPiece) bool {
 
 	return piece1.GetColor() != piece2.GetColor()
 }
-func Check(board *Board, color chessPieceColor, cell *Cell) bool {
-	isChecked := false
-	if color {
-		for key, value := range board.BlackPieces.data {
-			if key != 6 {
-				for _, piece := range value {
-					moves := piece.GetAvailableMoves()
-					for _, move := range moves {
-						if board.GetPieceOnCell(move).GetPosition().X == cell.X && board.GetPieceOnCell(move).GetPosition().Y == cell.Y {
-							isChecked = true
-							break
-						}
-					}
-				}
-			}
-		}
+
+func getKing(board *Board, color chessPieceColor) (king ChessPiece) {
+	if color == White {
+		king = board.BlackPieces.King()
 	} else {
-		for key, value := range board.WhitePieces.data {
-			if key != 6 {
-				for _, piece := range value {
-					moves := piece.GetAvailableMoves()
-					for _, move := range moves {
-						if board.GetPieceOnCell(move).GetPosition().X == cell.X && board.GetPieceOnCell(move).GetPosition().Y == cell.Y {
-							isChecked = true
-							break
-						}
-					}
+		king = board.WhitePieces.King()
+	}
+	return
+}
+
+func getPieces(board *Board, color chessPieceColor) (data chessPiecesData) {
+	if color == White {
+		data = board.BlackPieces.data
+	} else {
+		data = board.WhitePieces.data
+	}
+	return
+}
+
+func isUnderAttack(board *Board, color chessPieceColor, cell *Cell) bool {
+	data := getPieces(board, color)
+
+	for _, value := range data {
+		for _, piece := range value {
+			moves := piece.GetAvailableMoves()
+			for _, move := range moves {
+				if move.Equals(cell) {
+					return true
 				}
 			}
 		}
 	}
-	return isChecked
+	return false
+}
+
+func Check(board *Board, color chessPieceColor) bool {
+	return isUnderAttack(board, color, getKing(board, color).GetPosition())
 }
