@@ -35,7 +35,7 @@ func (pawn *Pawn) GetAvailableMoves() []Cell {
 
 	cell := Cell{X: pawn.Position.X, Y: nextY}
 	replace := pawn.board.GetPieceOnCell(cell)
-	if replace == nil {
+	if !pawn.board.isSimulating && replace == nil {
 		validateAndAddMove(&moves, pawn, replace, cell, pawn.board)
 
 		if pawn.isFirstMove() {

@@ -23,6 +23,7 @@ type Board struct {
 	Turn        chessPieceColor
 
 	piecesOnCell [BoardGrid][BoardGrid]ChessPiece
+	isSimulating bool
 }
 
 func (board *Board) AddPiece(piece ChessPiece) {
@@ -124,7 +125,7 @@ func CreateBoard() *Board {
 			Color:    Black,
 			Position: Cell{X: 4, Y: 0},
 		})
-		board.AddPiece(&Queen{
+		board.AddPiece(&King{
 			Color:    White,
 			Position: Cell{X: 4, Y: 7},
 		})

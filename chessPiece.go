@@ -23,8 +23,12 @@ type ChessPiece interface {
 }
 
 func validateAndAddMove(moves *[]Cell, piece, replace ChessPiece, cell Cell, board *Board) bool {
+	if cell.isUndefined() {
+		return false
+	}
+
 	if replace == nil || replace.GetColor() != piece.GetColor() {
-		if !simulateNextMove(piece, replace, cell, board) {
+		if board.isSimulating || !simulateNextMove(piece, replace, cell, board) {
 			*moves = append(*moves, cell)
 		}
 	}
@@ -101,6 +105,7 @@ func getPieces(board *Board, color chessPieceColor) (data chessPiecesData) {
 }
 
 func isUnderAttack(board *Board, color chessPieceColor, cell *Cell) bool {
+	board.isSimulating = true
 	data := getPieces(board, color)
 
 	for _, value := range data {
@@ -113,6 +118,7 @@ func isUnderAttack(board *Board, color chessPieceColor, cell *Cell) bool {
 			}
 		}
 	}
+	board.isSimulating = false
 	return false
 }
 

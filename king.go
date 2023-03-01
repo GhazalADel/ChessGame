@@ -38,7 +38,7 @@ func (king *King) GetAvailableMoves() []Cell {
 		validateAndAddMove(&moves, king, replace, cell, king.board)
 	}
 
-	if !king.Position.hasMoved {
+	if !king.board.isSimulating && !king.Position.hasMoved {
 		if king.canCastling(true) {
 			moves = append(moves, Cell{X: 6, Y: king.Position.Y})
 		}

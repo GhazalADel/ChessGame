@@ -7,11 +7,11 @@ type chessPieces struct {
 	board *Board
 }
 
-func (pieces chessPieces) King() ChessPiece {
+func (pieces *chessPieces) King() ChessPiece {
 	return pieces.data[typeKing][0]
 }
 
-func (pieces chessPieces) add(piece ChessPiece) {
+func (pieces *chessPieces) add(piece ChessPiece) {
 	if pieces.data == nil {
 		pieces.data = make(chessPiecesData)
 	}
