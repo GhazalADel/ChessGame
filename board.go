@@ -143,5 +143,5 @@ func (board *Board) GetPieceOnCell(c Cell) ChessPiece {
 type BoardInterface interface {
 	ShowBoard()
 	SelectCell(cell Cell)
-	getMyBoard() *Board
+	GetBoard() *Board
 }

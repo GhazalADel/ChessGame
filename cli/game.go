@@ -60,8 +60,13 @@ func GetPieceSymbol(piece ChessGame.ChessPiece) string {
 
 func (cli *ChessGameCLI) ShowBoard() {
 	var boardMap [ChessGame.BoardGrid*2 + 1][ChessGame.BoardGrid*5 + 1]any
-	var verticalNum int64 = 8
+	verticalNum := ChessGame.BoardGrid
 	var printNum bool = false
+
+	spaceBetweenNumAndBoard := " "
+	spaceBetweenBoardAndConsole := "  "
+	spaceBetweenLetters := "    "
+
 	for j := 0; j < len(boardMap); j++ {
 		for i := 0; i < len(boardMap[j]); i++ {
 			if j == 0 {
@@ -130,16 +135,21 @@ func (cli *ChessGameCLI) ShowBoard() {
 			printNum = true
 		}
 		if printNum {
-			fmt.Print("  ")
+			fmt.Print(spaceBetweenBoardAndConsole)
 		} else {
-			fmt.Print(" ")
+			fmt.Print(spaceBetweenNumAndBoard)
 		}
 		fmt.Print(boardMap[j][:]...)
 		fmt.Println()
 
 	}
-	letters := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 33, "    A    B    C    D    E    F    G    H")
-	fmt.Print(letters)
+	letterCode := 65
+	for i := 0; i < ChessGame.BoardGrid; i++ {
+		fmt.Print(spaceBetweenLetters)
+		letter := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 33, string(letterCode))
+		fmt.Print(letter)
+		letterCode += 1
+	}
 
 }
 
@@ -150,6 +160,6 @@ func (cli *ChessGameCLI) SelectCell(cell ChessGame.Cell) {
 		cli.Moves = piece.GetAvailableMoves()
 	}
 }
-func (cli *ChessGameCLI) getMyBoard() *ChessGame.Board {
+func (cli *ChessGameCLI) GetBoard() *ChessGame.Board {
 	return cli.Board
 }

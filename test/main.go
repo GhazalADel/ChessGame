@@ -11,8 +11,9 @@ func main() {
 	}
 	//ui.SelectCell(ChessGame.Cell{X: 0, Y: 1})
 	ui.ShowBoard()
-
-	for {
-
-	}
+	board := ui.GetBoard()
+	board.Turn = true
+	//for {
+	//
+	//}
 }
