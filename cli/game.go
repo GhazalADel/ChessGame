@@ -3,6 +3,7 @@ package ChessGameCLI
 import (
 	ChessGame "Chess"
 	"fmt"
+	"strconv"
 )
 
 type ChessGameCLI struct {
@@ -59,6 +60,8 @@ func GetPieceSymbol(piece ChessGame.ChessPiece) string {
 
 func (cli *ChessGameCLI) ShowBoard() {
 	var boardMap [ChessGame.BoardGrid*2 + 1][ChessGame.BoardGrid*5 + 1]any
+	var verticlaNum int64 = 8
+	var printNum bool = false
 	for j := 0; j < len(boardMap); j++ {
 		for i := 0; i < len(boardMap[j]); i++ {
 			if j == 0 {
@@ -118,10 +121,26 @@ func (cli *ChessGameCLI) ShowBoard() {
 				}
 			}
 		}
-
+		if printNum {
+			numbers := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 33, strconv.FormatInt(int64(verticlaNum), 10))
+			fmt.Print(numbers)
+			verticlaNum -= 1
+			printNum = false
+		} else {
+			printNum = true
+		}
+		if printNum {
+			fmt.Print("  ")
+		} else {
+			fmt.Print(" ")
+		}
 		fmt.Print(boardMap[j][:]...)
 		fmt.Println()
+
 	}
+	letters := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 33, "    A    B    C    D    E    F    G    H")
+	fmt.Print(letters)
+
 }
 
 func (cli *ChessGameCLI) SelectCell(cell ChessGame.Cell) {
