@@ -4,8 +4,7 @@ type Queen struct {
 	Position Cell
 	Color    chessPieceColor
 
-	board       *Board
-	TmpPosition Cell
+	board *Board
 }
 
 func (queen *Queen) getType() chessPieceType {
@@ -13,9 +12,6 @@ func (queen *Queen) getType() chessPieceType {
 }
 
 func (queen *Queen) GetPosition() *Cell {
-	if &queen.TmpPosition != nil {
-		return &queen.TmpPosition
-	}
 	return &queen.Position
 }
 
@@ -25,9 +21,6 @@ func (queen *Queen) GetColor() chessPieceColor {
 
 func (queen *Queen) attachToBoard(board *Board) {
 	queen.board = board
-}
-func (queen *Queen) setTmpPosition(cell *Cell) {
-	queen.TmpPosition = *cell
 }
 
 func (queen *Queen) GetAvailableMoves() []Cell {
@@ -43,7 +36,7 @@ func (queen *Queen) GetAvailableMoves() []Cell {
 		cell := Cell{X: queen.Position.X + path[0], Y: queen.Position.Y + path[1]}
 
 		for !cell.isUndefined() &&
-			validateAndAddMove(&moves, queen, queen.board.GetPieceOnCell(cell), cell, *queen.board) {
+			validateAndAddMove(&moves, queen, queen.board.GetPieceOnCell(cell), cell, queen.board) {
 			cell.X += path[0]
 			cell.Y += path[1]
 		}

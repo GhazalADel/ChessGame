@@ -20,16 +20,58 @@ type ChessPiece interface {
 	moveTo(cell Cell)
 	getType() chessPieceType
 	attachToBoard(board *Board)
-	setTmpPosition(cell *Cell)
 }
 
-func validateAndAddMove(moves *[]Cell, piece, replace ChessPiece, cell Cell, board Board) bool {
+func validateAndAddMove(moves *[]Cell, piece, replace ChessPiece, cell Cell, board *Board) bool {
 	if replace == nil || replace.GetColor() != piece.GetColor() {
-		// TODO: validate checkmate here
-		*moves = append(*moves, cell)
+		if !simulateNextMove(piece, replace, cell, board) {
+			*moves = append(*moves, cell)
+		}
+	}
+	return replace == nil
+}
+
+func simulateNextMove(piece, replace ChessPiece, cell Cell, board *Board) bool {
+	tmpBoard := Board{}
+	oldCell := Cell{
+		X:        piece.GetPosition().X,
+		Y:        piece.GetPosition().Y,
+		hasMoved: piece.GetPosition().hasMoved,
 	}
 
-	return replace == nil
+	piece.moveTo(cell)
+
+	doOnAllPieces(board, func(bp ChessPiece) {
+		if bp != replace {
+			tmpBoard.AddPiece(bp)
+		}
+	})
+
+	check := isCheck(&tmpBoard, piece.GetColor())
+
+	piece.GetPosition().update(oldCell)
+	piece.GetPosition().hasMoved = oldCell.hasMoved
+
+	doOnAllPieces(board, func(bp ChessPiece) {
+		bp.attachToBoard(board)
+	})
+
+	return check
+}
+
+func doOnAllPieces(board *Board, action func(ChessPiece)) {
+	pieces := [2]chessPiecesData{
+		board.BlackPieces.data,
+		board.WhitePieces.data,
+	}
+
+	for _, data := range pieces {
+		for _, value := range data {
+			for _, piece := range value {
+				action(piece)
+			}
+		}
+	}
 }
 
 func isEnemy(piece1, piece2 ChessPiece) bool {
@@ -77,6 +119,7 @@ func isUnderAttack(board *Board, color chessPieceColor, cell *Cell) bool {
 func isCheck(board *Board, color chessPieceColor) bool {
 	return isUnderAttack(board, color, getKing(board, color).GetPosition())
 }
+
 func isMate(piece ChessPiece, board *Board) bool {
 	if isUnderAttack(board, piece.GetColor(), getKing(board, piece.GetColor()).GetPosition()) {
 		for _, move := range getKing(board, piece.GetColor()).GetAvailableMoves() {

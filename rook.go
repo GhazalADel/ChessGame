@@ -4,8 +4,7 @@ type Rook struct {
 	Position Cell
 	Color    chessPieceColor
 
-	board       *Board
-	TmpPosition Cell
+	board *Board
 }
 
 func (rook *Rook) getType() chessPieceType {
@@ -13,9 +12,6 @@ func (rook *Rook) getType() chessPieceType {
 }
 
 func (rook *Rook) GetPosition() *Cell {
-	if &rook.TmpPosition != nil {
-		return &rook.TmpPosition
-	}
 	return &rook.Position
 }
 
@@ -25,9 +21,6 @@ func (rook *Rook) GetColor() chessPieceColor {
 
 func (rook *Rook) attachToBoard(board *Board) {
 	rook.board = board
-}
-func (rook *Rook) setTmpPosition(cell *Cell) {
-	rook.TmpPosition = *cell
 }
 
 func (rook *Rook) GetAvailableMoves() []Cell {
@@ -41,7 +34,7 @@ func (rook *Rook) GetAvailableMoves() []Cell {
 		cell := Cell{X: rook.Position.X + path[0], Y: rook.Position.Y + path[1]}
 
 		for !cell.isUndefined() &&
-			validateAndAddMove(&moves, rook, rook.board.GetPieceOnCell(cell), cell, *rook.board) {
+			validateAndAddMove(&moves, rook, rook.board.GetPieceOnCell(cell), cell, rook.board) {
 			cell.X += path[0]
 			cell.Y += path[1]
 		}
