@@ -4,7 +4,8 @@ type King struct {
 	Position Cell
 	Color    chessPieceColor
 
-	board *Board
+	board       *Board
+	TmpPosition Cell
 }
 
 func (king *King) getType() chessPieceType {
@@ -12,6 +13,9 @@ func (king *King) getType() chessPieceType {
 }
 
 func (king *King) GetPosition() *Cell {
+	if &king.TmpPosition != nil {
+		return &king.TmpPosition
+	}
 	return &king.Position
 }
 
@@ -21,6 +25,9 @@ func (king *King) GetColor() chessPieceColor {
 
 func (king *King) attachToBoard(board *Board) {
 	king.board = board
+}
+func (king *King) setTmpPosition(cell *Cell) {
+	king.TmpPosition = *cell
 }
 
 func (king *King) GetAvailableMoves() []Cell {
@@ -35,7 +42,7 @@ func (king *King) GetAvailableMoves() []Cell {
 	for _, path := range paths {
 		cell := Cell{X: king.Position.X + path[0], Y: king.Position.Y + path[1]}
 		replace := king.board.GetPieceOnCell(cell)
-		validateAndAddMove(&moves, king, replace, cell)
+		validateAndAddMove(&moves, king, replace, cell, *king.board)
 	}
 
 	if !king.Position.hasMoved {
@@ -67,7 +74,7 @@ func (king *King) canCastling(kingSide bool) bool {
 	}
 
 	piece := king.board.GetPieceOnCell(Cell{X: rookX, Y: king.Position.Y})
-	if piece != nil && piece.getType() == typeRook {
+	if piece != nil && piece.getType() == typeRook && !piece.GetPosition().hasMoved {
 		var xs [2]int
 		if kingSide {
 			xs = [2]int{5, 6}

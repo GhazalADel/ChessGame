@@ -20,9 +20,10 @@ type ChessPiece interface {
 	moveTo(cell Cell)
 	getType() chessPieceType
 	attachToBoard(board *Board)
+	setTmpPosition(cell *Cell)
 }
 
-func validateAndAddMove(moves *[]Cell, piece, replace ChessPiece, cell Cell) bool {
+func validateAndAddMove(moves *[]Cell, piece, replace ChessPiece, cell Cell, board Board) bool {
 	if replace == nil || replace.GetColor() != piece.GetColor() {
 		// TODO: validate checkmate here
 		*moves = append(*moves, cell)
@@ -75,4 +76,15 @@ func isUnderAttack(board *Board, color chessPieceColor, cell *Cell) bool {
 
 func isCheck(board *Board, color chessPieceColor) bool {
 	return isUnderAttack(board, color, getKing(board, color).GetPosition())
+}
+func isMate(piece ChessPiece, board *Board) bool {
+	if isUnderAttack(board, piece.GetColor(), getKing(board, piece.GetColor()).GetPosition()) {
+		for _, move := range getKing(board, piece.GetColor()).GetAvailableMoves() {
+			if !isUnderAttack(board, piece.GetColor(), &move) {
+				return false
+			}
+		}
+		return true
+	}
+	return false
 }

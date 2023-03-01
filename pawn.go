@@ -4,8 +4,9 @@ type Pawn struct {
 	Position Cell
 	Color    chessPieceColor
 
-	board     *Board
-	enPassant bool
+	board       *Board
+	enPassant   bool
+	TmpPosition Cell
 }
 
 func (pawn *Pawn) getType() chessPieceType {
@@ -13,6 +14,9 @@ func (pawn *Pawn) getType() chessPieceType {
 }
 
 func (pawn *Pawn) GetPosition() *Cell {
+	if &pawn.TmpPosition != nil {
+		return &pawn.TmpPosition
+	}
 	return &pawn.Position
 }
 
@@ -22,6 +26,9 @@ func (pawn *Pawn) GetColor() chessPieceColor {
 
 func (pawn *Pawn) attachToBoard(board *Board) {
 	pawn.board = board
+}
+func (pawn *Pawn) setTmpPosition(cell *Cell) {
+	pawn.TmpPosition = *cell
 }
 
 func (pawn *Pawn) GetAvailableMoves() []Cell {
@@ -36,7 +43,7 @@ func (pawn *Pawn) GetAvailableMoves() []Cell {
 	cell := Cell{X: pawn.Position.X, Y: nextY}
 	replace := pawn.board.GetPieceOnCell(cell)
 	if replace == nil {
-		validateAndAddMove(&moves, pawn, replace, cell)
+		validateAndAddMove(&moves, pawn, replace, cell, *pawn.board)
 
 		if pawn.isFirstMove() {
 			if pawn.Color.IsBlack() {
@@ -47,7 +54,7 @@ func (pawn *Pawn) GetAvailableMoves() []Cell {
 
 			replace = pawn.board.GetPieceOnCell(cell)
 			if replace == nil {
-				validateAndAddMove(&moves, pawn, replace, cell)
+				validateAndAddMove(&moves, pawn, replace, cell, *pawn.board)
 			}
 		}
 	}
@@ -56,14 +63,14 @@ func (pawn *Pawn) GetAvailableMoves() []Cell {
 	cell.Y = nextY
 	replace = pawn.board.GetPieceOnCell(cell)
 	if isEnemy(pawn, replace) {
-		validateAndAddMove(&moves, pawn, replace, cell)
+		validateAndAddMove(&moves, pawn, replace, cell, *pawn.board)
 	}
 
 	cell.Y = pawn.Position.Y
 	replace = pawn.board.GetPieceOnCell(cell)
 	if replace != nil {
 		if p, ok := replace.(*Pawn); ok && p.enPassant {
-			validateAndAddMove(&moves, pawn, replace, cell)
+			validateAndAddMove(&moves, pawn, replace, cell, *pawn.board)
 		}
 	}
 
@@ -71,14 +78,14 @@ func (pawn *Pawn) GetAvailableMoves() []Cell {
 	cell.Y = nextY
 	replace = pawn.board.GetPieceOnCell(cell)
 	if isEnemy(pawn, replace) {
-		validateAndAddMove(&moves, pawn, replace, cell)
+		validateAndAddMove(&moves, pawn, replace, cell, *pawn.board)
 	}
 
 	cell.Y = pawn.Position.Y
 	replace = pawn.board.GetPieceOnCell(cell)
 	if replace != nil {
 		if p, ok := replace.(*Pawn); ok && p.enPassant {
-			validateAndAddMove(&moves, pawn, replace, cell)
+			validateAndAddMove(&moves, pawn, replace, cell, *pawn.board)
 		}
 	}
 	return moves
