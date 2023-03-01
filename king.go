@@ -77,7 +77,7 @@ func (king *King) canCastling(kingSide bool) bool {
 
 		for _, x := range xs {
 			cell := Cell{X: x, Y: king.Position.Y}
-			if king.board.GetPieceOnCell(cell) != nil &&
+			if king.board.GetPieceOnCell(cell) != nil ||
 				isUnderAttack(king.board, king.GetColor(), &cell) {
 				return false
 			}
