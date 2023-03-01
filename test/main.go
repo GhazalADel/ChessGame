@@ -9,7 +9,10 @@ func main() {
 	var ui ChessGame.BoardInterface = &ChessGameCLI.ChessGameCLI{
 		Board: ChessGame.CreateBoard(),
 	}
-
-	ui.SelectCell(ChessGame.Cell{X: 0, Y: 1})
+	//ui.SelectCell(ChessGame.Cell{X: 0, Y: 1})
 	ui.ShowBoard()
+
+	for {
+
+	}
 }

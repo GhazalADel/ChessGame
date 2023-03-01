@@ -60,7 +60,7 @@ func GetPieceSymbol(piece ChessGame.ChessPiece) string {
 
 func (cli *ChessGameCLI) ShowBoard() {
 	var boardMap [ChessGame.BoardGrid*2 + 1][ChessGame.BoardGrid*5 + 1]any
-	var verticlaNum int64 = 8
+	var verticalNum int64 = 8
 	var printNum bool = false
 	for j := 0; j < len(boardMap); j++ {
 		for i := 0; i < len(boardMap[j]); i++ {
@@ -122,9 +122,9 @@ func (cli *ChessGameCLI) ShowBoard() {
 			}
 		}
 		if printNum {
-			numbers := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 33, strconv.FormatInt(int64(verticlaNum), 10))
+			numbers := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 33, strconv.FormatInt(int64(verticalNum), 10))
 			fmt.Print(numbers)
-			verticlaNum -= 1
+			verticalNum -= 1
 			printNum = false
 		} else {
 			printNum = true
@@ -149,4 +149,7 @@ func (cli *ChessGameCLI) SelectCell(cell ChessGame.Cell) {
 	if piece != nil {
 		cli.Moves = piece.GetAvailableMoves()
 	}
+}
+func (cli *ChessGameCLI) getMyBoard() *ChessGame.Board {
+	return cli.Board
 }
