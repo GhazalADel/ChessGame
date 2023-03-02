@@ -50,7 +50,7 @@ func (king *King) GetAvailableMoves() []Cell {
 	return moves
 }
 
-func (king *King) moveTo(cell Cell) {
+func (king *King) MoveTo(cell Cell) {
 	king.Position.update(cell)
 }
 

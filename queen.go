@@ -44,6 +44,6 @@ func (queen *Queen) GetAvailableMoves() []Cell {
 	return moves
 }
 
-func (queen *Queen) moveTo(cell Cell) {
+func (queen *Queen) MoveTo(cell Cell) {
 	queen.Position.update(cell)
 }

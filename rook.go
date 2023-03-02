@@ -42,6 +42,6 @@ func (rook *Rook) GetAvailableMoves() []Cell {
 	return moves
 }
 
-func (rook *Rook) moveTo(cell Cell) {
+func (rook *Rook) MoveTo(cell Cell) {
 	rook.Position.update(cell)
 }

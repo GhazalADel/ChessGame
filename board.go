@@ -139,9 +139,14 @@ func (board *Board) GetPieceOnCell(c Cell) ChessPiece {
 	}
 	return board.piecesOnCell[c.X][c.Y]
 }
+func (board *Board) SetPieceOnCell(c Cell, piece ChessPiece) {
+	board.piecesOnCell[c.X][c.Y] = piece
+}
 
 type BoardInterface interface {
 	ShowBoard()
 	SelectCell(cell Cell)
 	GetBoard() *Board
+	SetMoves(cells []Cell)
+	SetSelectedCell(cell Cell)
 }

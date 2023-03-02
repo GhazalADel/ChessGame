@@ -84,7 +84,7 @@ func (pawn *Pawn) GetAvailableMoves() []Cell {
 	return moves
 }
 
-func (pawn *Pawn) moveTo(cell Cell) {
+func (pawn *Pawn) MoveTo(cell Cell) {
 	pawn.enPassant = pawn.isFirstMove() &&
 		((pawn.Color.IsBlack() && cell.Y == 3) ||
 			(pawn.Color.IsWhite() && cell.Y == BoardGrid-4))

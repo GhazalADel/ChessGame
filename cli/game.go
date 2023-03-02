@@ -17,37 +17,37 @@ func GetPieceSymbol(piece ChessGame.ChessPiece) string {
 	if piece != nil {
 		switch piece.(type) {
 		case *ChessGame.Pawn:
-			if piece.GetColor().IsBlack() {
+			if piece.GetColor().IsWhite() {
 				symbol = "♙"
 			} else {
 				symbol = "♟"
 			}
 		case *ChessGame.Knight:
-			if piece.GetColor().IsBlack() {
+			if piece.GetColor().IsWhite() {
 				symbol = "♘"
 			} else {
 				symbol = "♞"
 			}
 		case *ChessGame.Bishop:
-			if piece.GetColor().IsBlack() {
+			if piece.GetColor().IsWhite() {
 				symbol = "♗"
 			} else {
 				symbol = "♝"
 			}
 		case *ChessGame.Rook:
-			if piece.GetColor().IsBlack() {
+			if piece.GetColor().IsWhite() {
 				symbol = "♖"
 			} else {
 				symbol = "♜"
 			}
 		case *ChessGame.Queen:
-			if piece.GetColor().IsBlack() {
+			if piece.GetColor().IsWhite() {
 				symbol = "♕"
 			} else {
 				symbol = "♛"
 			}
 		case *ChessGame.King:
-			if piece.GetColor().IsBlack() {
+			if piece.GetColor().IsWhite() {
 				symbol = "♔"
 			} else {
 				symbol = "♚"
@@ -60,7 +60,7 @@ func GetPieceSymbol(piece ChessGame.ChessPiece) string {
 
 func (cli *ChessGameCLI) ShowBoard() {
 	var boardMap [ChessGame.BoardGrid*2 + 1][ChessGame.BoardGrid*5 + 1]any
-	verticalNum := ChessGame.BoardGrid
+	verticalNum := 1
 	var printNum bool = false
 
 	spaceBetweenNumAndBoard := " "
@@ -117,8 +117,12 @@ func (cli *ChessGameCLI) ShowBoard() {
 					} else if cli.Moves != nil {
 						for _, m := range cli.Moves {
 							if cell.Equals(&m) {
-								color = 42
-								break
+								if cli.Board.GetPieceOnCell(cell) != nil {
+									color = 41
+								} else {
+									color = 42
+									break
+								}
 							}
 						}
 					}
@@ -129,7 +133,7 @@ func (cli *ChessGameCLI) ShowBoard() {
 		if printNum {
 			numbers := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 33, strconv.FormatInt(int64(verticalNum), 10))
 			fmt.Print(numbers)
-			verticalNum -= 1
+			verticalNum += 1
 			printNum = false
 		} else {
 			printNum = true
@@ -162,4 +166,10 @@ func (cli *ChessGameCLI) SelectCell(cell ChessGame.Cell) {
 }
 func (cli *ChessGameCLI) GetBoard() *ChessGame.Board {
 	return cli.Board
+}
+func (cli *ChessGameCLI) SetMoves(cells []ChessGame.Cell) {
+	cli.Moves = cells
+}
+func (cli *ChessGameCLI) SetSelectedCell(cell ChessGame.Cell) {
+	cli.Selected = cell
 }

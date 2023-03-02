@@ -17,7 +17,7 @@ type ChessPiece interface {
 	GetColor() chessPieceColor
 	GetAvailableMoves() []Cell
 
-	moveTo(cell Cell)
+	MoveTo(cell Cell)
 	getType() chessPieceType
 	attachToBoard(board *Board)
 }
@@ -43,7 +43,7 @@ func simulateNextMove(piece, replace ChessPiece, cell Cell, board *Board) bool {
 		hasMoved: piece.GetPosition().hasMoved,
 	}
 
-	piece.moveTo(cell)
+	piece.MoveTo(cell)
 
 	doOnAllPieces(board, func(bp ChessPiece) {
 		if bp != replace {

@@ -41,6 +41,6 @@ func (knight *Knight) GetAvailableMoves() []Cell {
 	return moves
 }
 
-func (knight *Knight) moveTo(cell Cell) {
+func (knight *Knight) MoveTo(cell Cell) {
 	knight.Position.update(cell)
 }

@@ -41,6 +41,6 @@ func (bishop *Bishop) GetAvailableMoves() []Cell {
 	return moves
 }
 
-func (bishop *Bishop) moveTo(cell Cell) {
+func (bishop *Bishop) MoveTo(cell Cell) {
 	bishop.Position.update(cell)
 }
